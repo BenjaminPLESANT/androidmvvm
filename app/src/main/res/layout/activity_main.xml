@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@={viewModel.userData.name}"
-                tools:ignore="SpeakableTextPresentCheck" />
+                />
 
             <EditText
                 android:id="@+id/emailEditText"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@={viewModel.userData.email}"
-                tools:ignore="SpeakableTextPresentCheck" />
+             />
 
             <Button
                 android:id="@+id/create_button"

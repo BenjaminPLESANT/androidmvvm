@@ -15,13 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidmvvm.adapter.UserAdapter;
+import com.example.androidmvvm.databinding.ActivityMainBinding;
 import com.example.androidmvvm.model.User;
 import com.example.androidmvvm.viewmodel.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements UserAdapter.UserClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private UserViewModel userViewModel;
     private RecyclerView recyclerView;
@@ -35,20 +36,18 @@ public class MainActivity extends AppCompatActivity implements UserAdapter.UserC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Charge le layout activity_main.xml
-        setContentView(R.layout.activity_main);
-        // Récupère une instance de UserViewModel à partir de ViewModelProvider
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
 
-        User userData = new User(null,null);
-        userViewModel.setUserData(userData);
-        recyclerView = findViewById(R.id.user_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.setViewModel(userViewModel);
+        binding.setLifecycleOwner(this);
 
-        //    Initialise les champs EditTexts et le bouton
-        nameEditText = findViewById(R.id.nameEditText);
-        emailEditText = findViewById(R.id.emailEditText);
-        createButton = findViewById(R.id.create_button);
+        User userData = new User(null, null);
+        userViewModel.setUserData(userData);
+
+        recyclerView = binding.userRecyclerview;
+       // recyclerView = findViewById(R.id.user_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(userAdapter);
 
@@ -60,12 +59,5 @@ public class MainActivity extends AppCompatActivity implements UserAdapter.UserC
             }
         });
 
-    }
-
-
-    // Implémentation de l'interface UserAdapter.UserClickListener pour gérer les clics sur un utilisateur
-    @Override
-    public void onUserClicked(User user) {
-        Toast.makeText(this, user.getName(), Toast.LENGTH_SHORT).show();
     }
 }
